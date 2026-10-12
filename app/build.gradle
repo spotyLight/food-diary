@@ -1,0 +1,44 @@
+plugins {
+    id 'com.android.application'
+}
+
+def buildNumber = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+
+android {
+    namespace 'com.spotylight.fooddiary'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.spotylight.fooddiary'
+        minSdk 26
+        targetSdk 34
+        versionCode buildNumber
+        versionName "1.0.${buildNumber}"
+    }
+
+    // A fixed key so each new APK installs over the previous one and keeps your data.
+    signingConfigs {
+        release {
+            storeFile file('fooddiary.keystore')
+            storePassword 'fooddiary'
+            keyAlias 'fooddiary'
+            keyPassword 'fooddiary'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}
